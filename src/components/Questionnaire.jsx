@@ -1,7 +1,7 @@
 import './Questionnaire.css';
 import React, { useState } from 'react';
 
-const OPENAI_API_KEY = "k-proj-5MzcBBXMiCHT8JRYWttLxvApyDWjmZtDropXbGEH-4RCXZAYRA6oWoIdsNA5PlIkbUhMtSL-wmT3BlbkFJSO5EtGQK20MDf0N0EP_FRXUqfCUtrRqN1QrkW3ak2rbSgcv0Q7kwcoNpIZc9H2n7fx7KhOp7MA"
+const OPENAI_API_KEY = "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"
 if (!OPENAI_API_KEY) {
   console.error('OpenAI API key is not set in environment variables');
 }
