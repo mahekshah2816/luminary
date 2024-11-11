@@ -198,7 +198,9 @@ export default function SkincareQuestionnaire() {
       4. What to expect from regular use
       5. Any precautions or tips
       Format the response as a JSON array of objects with properties: 
-      type, timing, ingredients, benefits, application, results, precautions.`;
+      type, timing, ingredients, benefits, application, results, precautions.
+      No JSON ticks are needed for markdown. I need plain json only for the response. no \n needed. i will handle the formatting.
+      `;
   
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
