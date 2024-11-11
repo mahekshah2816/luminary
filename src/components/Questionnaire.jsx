@@ -1,6 +1,10 @@
+import './Questionnaire.css';
 import React, { useState } from 'react';
 
-const OPENAI_API_KEY = "API_KEY";
+const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+if (!OPENAI_API_KEY) {
+  console.error('OpenAI API key is not set in environment variables');
+}
 
 const skinTypes = {
   "Oily": {
@@ -23,6 +27,75 @@ const skinTypes = {
     title: "Normal/Balanced Skin",
     description: "Your skin is well-balanced with minimal concerns. Focus on maintaining this balance with a consistent routine of gentle cleansing, hydration, and sun protection. Don't forget preventive care to maintain your skin's health."
   }
+};
+
+const styles = {
+  container: `
+    background-color: #ffffff
+    border: 2px solid #e8c1e1
+    border-radius: 15px
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1)
+    width: 700px
+    max-height: 90vh
+    overflow-y: auto
+    padding: 40px
+    margin-bottom: 20px
+  `,
+  heading: `
+    color: #d16a99
+    font-size: 30px
+    text-align: center
+    font-family: 'Poppins', sans-serif
+  `,
+  subheading: `
+    color: #d16a99
+    font-size: 22px
+    text-align: center
+    margin-bottom: 20px
+    font-family: 'Poppins', sans-serif
+  `,
+  description: `
+    font-size: 16px
+    color: #5c375d
+    line-height: 1.8
+    margin-bottom: 20px
+    font-family: 'Poppins', sans-serif
+  `,
+  productCard: `
+    background-color: #fff9fc
+    border: 1px solid #e8c1e1
+    border-radius: 8px
+    padding: 20px
+    margin-bottom: 15px
+    transition: transform 0.2s
+    hover:transform hover:-translate-y-2
+    hover:shadow-lg
+  `,
+  button: `
+    bg-[#f4a4b8]
+    border-none
+    text-white
+    py-4
+    px-5
+    text-center
+    text-decoration-none
+    inline-block
+    text-base
+    cursor-pointer
+    rounded-lg
+    w-full
+    mt-5
+    hover:bg-[#d16a99]
+    transition-colors
+    font-family: 'Poppins', sans-serif
+  `,
+  loading: `
+    text-center
+    text-[#d16a99]
+    p-5
+    animate-pulse
+    font-family: 'Poppins', sans-serif
+  `
 };
 
 export default function SkincareQuestionnaire() {
@@ -191,57 +264,38 @@ export default function SkincareQuestionnaire() {
   };
 
   const ResultCard = ({ product }) => (
-    <div className="bg-[#fff9fc] border border-[#e8c1e1] rounded-lg p-5 hover:transform hover:-translate-y-0.5 transition-transform">
-      <h3 className="text-[#d16a99] font-medium text-xl mb-3">{product.type}</h3>
-      <p className="text-[#5c375d] mb-2"><strong>When to Use:</strong> {product.timing}</p>
-      <p className="text-[#5c375d] mb-2"><strong>Key Ingredients:</strong> {product.ingredients}</p>
-      <p className="text-[#5c375d] mb-2"><strong>Benefits:</strong> {product.benefits}</p>
-      <p className="text-[#5c375d] mb-2"><strong>How to Apply:</strong> {product.application}</p>
-      <p className="text-[#5c375d] mb-2"><strong>Expected Results:</strong> {product.results}</p>
-      <p className="text-[#5c375d]"><strong>Precautions:</strong> {product.precautions}</p>
+    <div className="product-card">
+      <h3>{product.type}</h3>
+      <p><strong>When to Use:</strong> {product.timing}</p>
+      <p><strong>Key Ingredients:</strong> {product.ingredients}</p>
+      <p><strong>Benefits:</strong> {product.benefits}</p>
+      <p><strong>How to Apply:</strong> {product.application}</p>
+      <p><strong>Expected Results:</strong> {product.results}</p>
+      <p><strong>Precautions:</strong> {product.precautions}</p>
     </div>
   );
 
   if (showResults) {
     return (
-      <div className="min-h-screen flex justify-center items-center bg-[#f8e7f2] p-5">
-        <div className="w-full max-w-3xl">
-          <div>
-            <div className="text-3xl text-center text-[#d16a99]">
-              Your Skin Type Analysis
+      <div className="body">
+        <div className="container">
+          <h1>Your Skin Type Analysis</h1>
+          {skinType && <h2>{skinTypes[skinType].title}</h2>}
+          {skinType && <p>{skinTypes[skinType].description}</p>}
+
+          {isLoading ? (
+            <div id="loadingRecommendations">
+              <p>Generating personalized recommendations...</p>
             </div>
-            {skinType && (
-              <h2 className="text-2xl text-center text-[#d16a99]">
-                {skinTypes[skinType].title}
-              </h2>
-            )}
-          </div>
-          <div className="space-y-6">
-            {skinType && (
-              <p className="text-[#5c375d] leading-relaxed">
-                {skinTypes[skinType].description}
-              </p>
-            )}
+          ) : (
+            <div id="productRecommendations" className="product-list">
+              {recommendations.map((product, index) => (
+                <ResultCard key={index} product={product} />
+              ))}
+            </div>
+          )}
 
-            {isLoading ? (
-              <div className="text-center text-[#d16a99] p-5 animate-pulse">
-                <p>Generating personalized recommendations...</p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {recommendations.map((product, index) => (
-                  <ResultCard key={index} product={product} />
-                ))}
-              </div>
-            )}
-
-            <button
-              onClick={resetForm}
-              className="w-full bg-[#f4a4b8] text-white py-3 px-4 rounded-lg hover:bg-[#d16a99] transition-colors"
-            >
-              Take Quiz Again
-            </button>
-          </div>
+          <button onClick={resetForm}>Go Back to Questionnaire</button>
         </div>
       </div>
     );
