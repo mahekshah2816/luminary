@@ -1,4 +1,4 @@
-import './Questionnaire.css';
+mport './Questionnaire.css';
 import React, { useState } from 'react';
 
 const OPENAI_API_KEY = "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"
@@ -30,72 +30,68 @@ const skinTypes = {
 };
 
 const styles = {
-  container: `
-    background-color: #ffffff
-    border: 2px solid #e8c1e1
-    border-radius: 15px
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1)
-    width: 700px
-    max-height: 90vh
-    overflow-y: auto
-    padding: 40px
-    margin-bottom: 20px
-  `,
-  heading: `
-    color: #d16a99
-    font-size: 30px
-    text-align: center
-    font-family: 'Poppins', sans-serif
-  `,
-  subheading: `
-    color: #d16a99
-    font-size: 22px
-    text-align: center
-    margin-bottom: 20px
-    font-family: 'Poppins', sans-serif
-  `,
-  description: `
-    font-size: 16px
-    color: #5c375d
-    line-height: 1.8
-    margin-bottom: 20px
-    font-family: 'Poppins', sans-serif
-  `,
-  productCard: `
-    background-color: #fff9fc
-    border: 1px solid #e8c1e1
-    border-radius: 8px
-    padding: 20px
-    margin-bottom: 15px
-    transition: transform 0.2s
-    hover:transform hover:-translate-y-2
-    hover:shadow-lg
-  `,
-  button: `
-    bg-[#f4a4b8]
-    border-none
-    text-white
-    py-4
-    px-5
-    text-center
-    text-decoration-none
-    inline-block
-    text-base
-    cursor-pointer
-    rounded-lg
-    w-full
-    mt-5
-    hover:bg-[#d16a99]
-    transition-colors
-    font-family: 'Poppins', sans-serif
-  `,
-  loading: `
-    text-center
-    text-[#d16a99]
-    p-5
-    animate-pulse
-    font-family: 'Poppins', sans-serif
-  `
+  container: {
+    backgroundColor: '#ffffff',
+    border: '2px solid #e8c1e1',
+    borderRadius: '15px',
+    boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.1)',
+    width: '700px',
+    maxHeight: '90vh',
+    overflowY: 'auto',
+    padding: '40px',
+    marginBottom: '20px',
+  },
+  heading: {
+    color: '#d16a99',
+    fontSize: '30px',
+    textAlign: 'center',
+    fontFamily: "'Poppins', sans-serif",
+  },
+  subheading: {
+    color: '#d16a99',
+    fontSize: '20px',
+    textAlign: 'center',
+    marginBottom: '20px',
+    fontFamily: "'Poppins', sans-serif",
+  },
+  label: {
+    display: 'block',
+    marginBottom: '10px',
+    fontSize: '16px',
+    color: '#5c375d',
+  },
+  input: {
+    width: '100%',
+    padding: '10px',
+    marginBottom: '20px',
+    border: '1px solid #e8c1e1',
+    borderRadius: '8px',
+    boxSizing: 'border-box',
+    backgroundColor: '#f2d3e4',
+  },
+  radioCheckbox: {
+    marginRight: '8px',
+  },
+  button: {
+    backgroundColor: '#f4a4b8',
+    border: 'none',
+    color: 'white',
+    padding: '15px 20px',
+    textAlign: 'center',
+    textDecoration: 'none',
+    display: 'inline-block',
+    fontSize: '16px',
+    cursor: 'pointer',
+    borderRadius: '8px',
+    width: '100%',
+    marginTop: '20px',
+  },
+  buttonHover: {
+    backgroundColor: '#d16a99',
+  },
+  question: {
+    marginBottom: '20px',
+  }
 };
 
 export default function SkincareQuestionnaire() {
@@ -188,18 +184,19 @@ export default function SkincareQuestionnaire() {
     setIsLoading(true);
     
     try {
-      const prompt = `Generate detailed personalized skincare recommendations for someone with ${determinedSkinType} skin type. 
-      Their specific concerns are: ${concerns.join(', ')}. 
-      Provide 4 essential products: cleanser, toner, moisturizer, and sunscreen and a treatment.
-      For each product, include:
-      1. Detailed product type and when to use it (morning/evening)
-      2. Key active ingredients with their specific benefits
-      3. How to apply the product properly
-      4. What to expect from regular use
-      5. Any precautions or tips
-      Format the response as a JSON array of objects with properties: 
-      type, timing, ingredients, benefits, application, results, precautions.
-      No JSON ticks are needed for markdown. I need plain json only for the response. no \n needed. i will handle the formatting. `;
+      const prompt = `You are a skincare expert. Create a skincare routine for ${determinedSkinType} skin type with concerns: ${concerns.join(', ')}.
+      Return exactly 5 products: cleanser, toner, moisturizer, sunscreen, and treatment.
+      Return ONLY a raw JSON array. Do not include markdown, code blocks, or explanation text.
+      Each product object must have these exact properties:
+      {
+        "type": "product name",
+        "timing": "when to use",
+        "ingredients": "key ingredients",
+        "benefits": "main benefits",
+        "application": "how to apply",
+        "results": "expected results",
+        "precautions": "warnings and tips"
+      }`;
   
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
@@ -303,183 +300,106 @@ export default function SkincareQuestionnaire() {
   }
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-[#f8e7f2] p-5">
-      <div className="w-full max-w-3xl max-h-[90vh] overflow-y-auto">
-        <div>
-          <div className="text-3xl text-center text-[#d16a99]">Welcome to Luminary</div>
-          <h2 className="text-xl font-medium text-center text-[#d16a99]">Comprehensive Skincare Analysis Questionnaire</h2>
-        </div>
-        <div>
-          <form onSubmit={submitForm} className="space-y-6">
-            {/* Skin Texture */}
-            <div className="space-y-2">
-              <label className="block text-[#5c375d]">1. How would you describe your skin texture?</label>
-              <div className="space-y-1">
-                <label className="flex items-center space-x-2">
-                  <input type="radio" name="skinTexture" value="smooth" required />
-                  <span>Smooth</span>
-                </label>
-                <label className="flex items-center space-x-2">
-                  <input type="radio" name="skinTexture" value="rough" />
-                  <span>Rough</span>
-                </label>
-                <label className="flex items-center space-x-2">
-                  <input type="radio" name="skinTexture" value="bumpy" />
-                  <span>Bumpy</span>
-                </label>
-              </div>
-            </div>
+    <div style={{ backgroundColor: '#f8e7f2', fontFamily: "'Poppins', sans-serif", display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', margin: 0, padding: '20px' }}>
+      <div style={styles.container}>
+        <h1 style={styles.heading}>Welcome to Luminary</h1>
+        <h2 style={styles.subheading}>Comprehensive Skincare Analysis Questionnaire</h2>
+        <form onSubmit={submitForm}>
+          {/* Skin Texture */}
+          <div style={styles.question}>
+            <label style={styles.label}>1. How would you describe your skin texture?</label>
+            <input type="radio" name="skinTexture" value="smooth" required style={styles.radioCheckbox} /> Smooth<br />
+            <input type="radio" name="skinTexture" value="rough" style={styles.radioCheckbox} /> Rough<br />
+            <input type="radio" name="skinTexture" value="bumpy" style={styles.radioCheckbox} /> Bumpy<br />
+          </div>
 
-            {/* Oil Production */}
-            <div className="space-y-2">
-              <label className="block text-[#5c375d]">2. How does your skin usually feel by the end of the day?</label>
-              <div className="space-y-1">
-                <label className="flex items-center space-x-2">
-                  <input type="radio" name="oilProduction" value="very-oily" required />
-                  <span>Very Oily</span>
-                </label>
-                <label className="flex items-center space-x-2">
-                  <input type="radio" name="oilProduction" value="slightly-oily" />
-                  <span>Slightly Oily</span>
-                </label>
-                <label className="flex items-center space-x-2">
-                  <input type="radio" name="oilProduction" value="balanced" />
-                  <span>Balanced</span>
-                </label>
-                <label className="flex items-center space-x-2">
-                  <input type="radio" name="oilProduction" value="dry" />
-                  <span>Dry</span>
-                </label>
-              </div>
-            </div>
+          {/* Oil Production */}
+          <div style={styles.question}>
+            <label style={styles.label}>2. How does your skin usually feel by the end of the day?</label>
+            <input type="radio" name="oilProduction" value="very-oily" required style={styles.radioCheckbox} /> Very Oily<br />
+            <input type="radio" name="oilProduction" value="slightly-oily" style={styles.radioCheckbox} /> Slightly Oily<br />
+            <input type="radio" name="oilProduction" value="balanced" style={styles.radioCheckbox} /> Balanced<br />
+            <input type="radio" name="oilProduction" value="dry" style={styles.radioCheckbox} /> Dry<br />
+          </div>
 
-            {/* Skin Sensitivity */}
-            <div className="space-y-2">
-              <label className="block text-[#5c375d]">3. How often do you experience redness, itching, or irritation?</label>
-              <div className="space-y-1">
-                <label className="flex items-center space-x-2">
-                  <input type="radio" name="sensitivity" value="frequently" required />
-                  <span>Frequently</span>
-                </label>
-                <label className="flex items-center space-x-2">
-                  <input type="radio" name="sensitivity" value="occasionally" />
-                  <span>Occasionally</span>
-                </label>
-                <label className="flex items-center space-x-2">
-                  <input type="radio" name="sensitivity" value="rarely" />
-                  <span>Rarely</span>
-                </label>
-              </div>
-            </div>
+          {/* Skin Sensitivity */}
+          <div style={styles.question}>
+            <label style={styles.label}>3. How often do you experience redness, itching, or irritation on your skin?</label>
+            <input type="radio" name="sensitivity" value="frequently" required style={styles.radioCheckbox} /> Frequently<br />
+            <input type="radio" name="sensitivity" value="occasionally" style={styles.radioCheckbox} /> Occasionally<br />
+            <input type="radio" name="sensitivity" value="rarely" style={styles.radioCheckbox} /> Rarely<br />
+          </div>
 
-            {/* Pore Size */}
-            <div className="space-y-2">
-              <label className="block text-[#5c375d]">4. How would you describe your pore size?</label>
-              <div className="space-y-1">
-                <label className="flex items-center space-x-2">
-                  <input type="radio" name="poreSize" value="large" required />
-                  <span>Large</span>
-                </label>
-                <label className="flex items-center space-x-2">
-                  <input type="radio" name="poreSize" value="medium" />
-                  <span>Medium</span>
-                </label>
-                <label className="flex items-center space-x-2">
-                  <input type="radio" name="poreSize" value="small" />
-                  <span>Small</span>
-                </label>
-              </div>
-            </div>
+          {/* Pore Size */}
+          <div style={styles.question}>
+            <label style={styles.label}>4. How would you describe your pore size?</label>
+            <input type="radio" name="poreSize" value="large" required style={styles.radioCheckbox} /> Large<br />
+            <input type="radio" name="poreSize" value="medium" style={styles.radioCheckbox} /> Medium<br />
+            <input type="radio" name="poreSize" value="small" style={styles.radioCheckbox} /> Small<br />
+          </div>
 
-            {/* Reaction to Products */}
-            <div className="space-y-2">
-              <label className="block text-[#5c375d]">5. How does your skin usually react to new skincare products?</label>
-              <div className="space-y-1">
-                <label className="flex items-center space-x-2">
-                  <input type="radio" name="productReaction" value="easily-irritated" required />
-                  <span>Easily Irritated</span>
-                </label>
-                <label className="flex items-center space-x-2">
-                  <input type="radio" name="productReaction" value="no-reaction" />
-                  <span>No Reaction</span>
-                </label>
-                <label className="flex items-center space-x-2">
-                  <input type="radio" name="productReaction" value="slight-reaction" />
-                  <span>Slight Reaction</span>
-                </label>
-              </div>
-            </div>
+          {/* Reaction to Products */}
+          <div style={styles.question}>
+            <label style={styles.label}>5. How does your skin usually react to new skincare products?</label>
+            <input type="radio" name="productReaction" value="easily-irritated" required style={styles.radioCheckbox} /> Easily Irritated<br />
+            <input type="radio" name="productReaction" value="no-reaction" style={styles.radioCheckbox} /> No Reaction<br />
+            <input type="radio" name="productReaction" value="slight-reaction" style={styles.radioCheckbox} /> Slight Reaction<br />
+          </div>
 
-            {/* Hydration */}
-            <div className="space-y-2">
-              <label className="block text-[#5c375d]">6. How does your skin feel after washing it?</label>
-              <div className="space-y-1">
-                <label className="flex items-center space-x-2">
-                  <input type="radio" name="hydration" value="tight" required />
-                  <span>Tight and Dry</span>
-                </label>
-                <label className="flex items-center space-x-2">
-                  <input type="radio" name="hydration" value="balanced" />
-                  <span>Balanced</span>
-                </label>
-                <label className="flex items-center space-x-2">
-                  <input type="radio" name="hydration" value="comfortable" />
-                  <span>Comfortable and Soft</span>
-                </label>
-              </div>
-              </div>
+          {/* Hydration */}
+          <div style={styles.question}>
+            <label style={styles.label}>6. How does your skin feel after washing it?</label>
+            <input type="radio" name="hydration" value="tight" required style={styles.radioCheckbox} /> Tight and Dry<br />
+            <input type="radio" name="hydration" value="balanced" style={styles.radioCheckbox} /> Balanced<br />
+            <input type="radio" name="hydration" value="comfortable" style={styles.radioCheckbox} /> Comfortable and Soft<br />
+          </div>
 
-              <div className="space-y-2">
-            <label className="block text-[#5c375d]">7. What are your main skin concerns? (Select all that apply)</label>
-            <div className="space-y-1">
-              <label><input type="checkbox" name="concern" value="acne" /> Acne</label>
-              <label><input type="checkbox" name="concern" value="pores" /> Large Pores</label>
-              <label><input type="checkbox" name="concern" value="pigmentation" /> Pigmentation</label>
-              <label><input type="checkbox" name="concern" value="redness" /> Redness</label>
-              <label><input type="checkbox" name="concern" value="fine-lines" /> Fine Lines and Wrinkles</label>
-              <label><input type="checkbox" name="concern" value="blackheads" /> Blackheads</label>
-              <label><input type="checkbox" name="concern" value="dullness" /> Dullness</label>
-              <label><input type="checkbox" name="concern" value="dehydration" /> Dehydration</label>
-            </div>
+          {/* Skin Concerns */}
+          <div style={styles.question}>
+            <label style={styles.label}>7. What are your main skin concerns? (Select all that apply)</label>
+            <input type="checkbox" name="concern" value="acne" style={styles.radioCheckbox} /> Acne<br />
+            <input type="checkbox" name="concern" value="pores" style={styles.radioCheckbox} /> Large Pores<br />
+            <input type="checkbox" name="concern" value="pigmentation" style={styles.radioCheckbox} /> Pigmentation<br />
+            <input type="checkbox" name="concern" value="redness" style={styles.radioCheckbox} /> Redness<br />
+            <input type="checkbox" name="concern" value="fine-lines" style={styles.radioCheckbox} /> Fine Lines and Wrinkles<br />
+            <input type="checkbox" name="concern" value="blackheads" style={styles.radioCheckbox} /> Blackheads<br />
+            <input type="checkbox" name="concern" value="dullness" style={styles.radioCheckbox} /> Dullness<br />
+            <input type="checkbox" name="concern" value="dehydration" style={styles.radioCheckbox} /> Dehydration<br />
           </div>
 
           {/* Skin Reaction to Climate */}
-          <div className="space-y-2">
-            <label className="block text-[#5c375d]">8. How does your skin react to climate changes (e.g., cold winters, hot summers)?</label>
-            <textarea name="climateReaction" rows="3" placeholder="Describe your skin's response to weather changes..." required></textarea>
+          <div style={styles.question}>
+            <label style={styles.label}>8. How does your skin react to climate changes (e.g., cold winters, hot summers)?</label>
+            <textarea name="climateReaction" rows="3" placeholder="Describe your skin's response to weather changes..." required style={styles.input}></textarea>
           </div>
 
           {/* Sun Exposure */}
-          <div className="space-y-2">
-            <label className="block text-[#5c375d]">9. How does your skin respond to sun exposure?</label>
-            <div className="space-y-1">
-              <label><input type="radio" name="sunResponse" value="burns-easily" required /> Burns Easily</label>
-              <label><input type="radio" name="sunResponse" value="tans-easily" /> Tans Easily</label>
-              <label><input type="radio" name="sunResponse" value="no-major-reaction" /> No Major Reaction</label>
-            </div>
+          <div style={styles.question}>
+            <label style={styles.label}>9. How does your skin respond to sun exposure?</label>
+            <input type="radio" name="sunResponse" value="burns-easily" required style={styles.radioCheckbox} /> Burns Easily<br />
+            <input type="radio" name="sunResponse" value="tans-easily" style={styles.radioCheckbox} /> Tans Easily<br />
+            <input type="radio" name="sunResponse" value="no-major-reaction" style={styles.radioCheckbox} /> No Major Reaction<br />
           </div>
 
           {/* Product Preferences */}
-          <div className="space-y-2">
-            <label className="block text-[#5c375d]">10. Do you have any product preferences? (e.g., fragrance-free, vegan, cruelty-free)</label>
-            <textarea name="productPreferences" rows="3" placeholder="Enter your preferences here..." required></textarea>
+          <div style={styles.question}>
+            <label style={styles.label}>10. Do you have any product preferences? (e.g., fragrance-free, vegan, cruelty-free)</label>
+            <textarea name="productPreferences" rows="3" placeholder="Enter your preferences here..." required style={styles.input}></textarea>
           </div>
 
-          <div className="space-y-2">
-            <label className="block text-[#5c375d]">11. Does your skin react to any of the following environmental factors?</label>
-            <div className="space-y-1">
-              <label><input type="checkbox" name="factor" value="heat" /> Heat</label>
-              <label><input type="checkbox" name="factor" value="humidity" /> Humidity</label>
-              <label><input type="checkbox" name="factor" value="pollution" /> Pollution</label>
-              <label><input type="checkbox" name="factor" value="dust" /> Dust</label>
-              <label><input type="checkbox" name="factor" value="wind" /> Wind</label>
-            </div>
+          {/* Environmental Impact */}
+          <div style={styles.question}>
+            <label style={styles.label}>11. Does your skin react to any of the following environmental factors?</label>
+            <input type="checkbox" name="factor" value="heat" style={styles.radioCheckbox} /> Heat<br />
+            <input type="checkbox" name="factor" value="humidity" style={styles.radioCheckbox} /> Humidity<br />
+            <input type="checkbox" name="factor" value="pollution" style={styles.radioCheckbox} /> Pollution<br />
+            <input type="checkbox" name="factor" value="sun-exposure" style={styles.radioCheckbox} /> Sun Exposure<br />
+            <input type="checkbox" name="factor" value="wind" style={styles.radioCheckbox} /> Wind<br />
           </div>
 
-          <button type="submit" className="bg-[#d16a99] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#b05986]">Submit</button>
+          <button type="submit" style={styles.button} onMouseOver={(e) => e.target.style.backgroundColor = styles.buttonHover.backgroundColor} onMouseOut={(e) => e.target.style.backgroundColor = styles.button.backgroundColor}>Submit & Analyze Skin Type</button>
         </form>
       </div>
-    </div>
     </div>
   );
 }
