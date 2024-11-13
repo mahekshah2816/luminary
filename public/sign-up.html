@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Luminary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8e7f2; 
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: #ffffff;
+            border: 2px solid #e8c1e1;
+            border-radius: 15px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+            width: 500px; 
+            padding: 50px; 
+            text-align: center;
+        }
+        h1 {
+            color: #d16a99;
+            font-size: 36px; 
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 16px;
+            color: #5c375d;
+            margin-bottom: 30px; 
+        }
+        label {
+            display: block;
+            text-align: left;
+            margin-bottom: 8px; 
+            font-size: 14px;
+            color: #5c375d;
+        }
+        input[type="text"], input[type="password"], input[type="email"] {
+            width: 90%; 
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #e8c1e1;
+            border-radius: 8px;
+            box-sizing: border-box;
+            background-color: #f2d3e4;
+        }
+        button {
+            background-color: #f4a4b8;
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            width: 100%; 
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #d16a99;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Luminary</h1>
+        <p>Join us and start your personalized skincare journey today.</p>
+        <form action="questionnaire.html" method="get">
+            <label for="fullname">Full Name:</label>
+            <input type="text" id="fullname" required placeholder="Enter your full name">
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" required placeholder="Enter your email">
+
+            <label for="username">Username:</label>
+            <input type="text" id="username" required placeholder="Create a username">
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" required placeholder="Create a password">
+
+            <button type="submit">Create Account</button>
+        </form>
+    </div>
+</body>
+</html>
+
