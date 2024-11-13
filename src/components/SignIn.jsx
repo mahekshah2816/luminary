@@ -1,7 +1,45 @@
-import React from 'react';
-import { Link } from 'react-router-dom'; // Assuming you're using react-router
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { supabase } from '../lib/supabaseClient';
 
 const SignIn = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (error) throw error;
+
+      // Successful sign in
+      navigate('/questionnaire'); // or wherever you want to redirect
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const styles = {
     body: {
       backgroundColor: '#f8e7f2',
@@ -58,11 +96,15 @@ const SignIn = () => {
         backgroundColor: '#d16a99',
       },
     },
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Add your sign-in logic here
+    error: {
+      backgroundColor: '#ffebee',
+      color: '#c62828',
+      padding: '12px',
+      borderRadius: '4px',
+      marginBottom: '20px',
+      textAlign: 'left',
+      fontSize: '14px',
+    },
   };
 
   return (
@@ -70,14 +112,17 @@ const SignIn = () => {
       <div style={styles.container}>
         <h1 style={styles.h1}>Luminary</h1>
         <h2>Sign In</h2>
+        {error && <div style={styles.error}>{error}</div>}
         <form onSubmit={handleSubmit}>
-          <label style={styles.label} htmlFor="username">
-            Username:
+          <label style={styles.label} htmlFor="email">
+            Email:
           </label>
           <input
             style={styles.input}
-            type="text"
-            id="username"
+            type="email"
+            id="email"
+            value={formData.email}
+            onChange={handleChange}
             required
           />
           <label style={styles.label} htmlFor="password">
@@ -87,13 +132,16 @@ const SignIn = () => {
             style={styles.input}
             type="password"
             id="password"
+            value={formData.password}
+            onChange={handleChange}
             required
           />
           <button
             style={{ ...styles.button, ...styles.buttonHover }}
             type="submit"
+            disabled={loading}
           >
-            Sign In
+            {loading ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
         <p>
