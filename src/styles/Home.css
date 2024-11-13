@@ -1,0 +1,102 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+#root {
+    height: 100%;
+    width: 100%;
+}
+
+.main-container {
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #fce4ec, #f8bbd0);
+}
+
+.landing-page {
+    text-align: center;
+}
+
+.landing-page h1 {
+    font-size: 56px; 
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+}
+
+.landing-page p {
+    font-size: 24px; 
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); 
+}
+
+.landing-page .button-container {
+    margin-top: 20px; 
+}
+
+.landing-page .button {
+    padding: 15px 30px;
+    background: linear-gradient(45deg, #ff66b2, #ff4081); 
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 30px; 
+    margin: 0 10px; 
+    font-size: 18px; 
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3); 
+}
+
+.landing-page .button:hover {
+    background: linear-gradient(45deg, #c2185b, #ff007f); 
+    transform: translateY(-3px); 
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4); 
+}
+
+.landing-page .confetti {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none; 
+    z-index: 0;
+}
+
+.landing-page .confetti div {
+    position: absolute;
+    background-color: rgba(255, 105, 180, 0.8);
+    opacity: 0.9;
+    animation: fall 5s infinite;
+    bottom: 100%;
+}
+
+@keyframes fall {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(100vh); }
+}
+
+@media (max-width: 768px) {
+    .landing-page h1 {
+        font-size: 36px; 
+    }
+
+    .landing-page p {
+        font-size: 20px; 
+    }
+}
+
+.landing-page .content {
+    position: relative;
+    z-index: 1;
+} 
